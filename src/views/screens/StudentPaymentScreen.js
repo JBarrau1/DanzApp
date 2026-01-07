@@ -18,9 +18,10 @@ import { Card } from '../components/Card';
 import { PaymentRegistrationModal } from '../components/PaymentRegistrationModal';
 import { CreateMensualidadModal } from '../components/CreateMensualidadModal';
 import { MensualidadService } from '../../services/MensualidadService';
+import { Estudiante } from '../../models/Estudiante';
 
 export const StudentPaymentScreen = ({ route, navigation }) => {
-  const { student } = route.params;
+  const student = Estudiante.fromJSON(route.params.student);
   const colorScheme = useColorScheme();
   const theme = getTheme(colorScheme === 'dark');
   const [mensualidades, setMensualidades] = useState([]);

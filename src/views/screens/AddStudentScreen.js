@@ -19,8 +19,10 @@ export const AddStudentScreen = ({ route, navigation }) => {
   const [telefonoTutor, setTelefonoTutor] = useState('');
   const [elencoId, setElencoId] = useState(preselectedElencoId || null);
   const [fechaInscripcion, setFechaInscripcion] = useState(new Date());
+  const [fechaNacimiento, setFechaNacimiento] = useState(null);
   const [montoMens, setMontoMens] = useState('200');
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
   const [elencos, setElencos] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -34,8 +36,8 @@ export const AddStudentScreen = ({ route, navigation }) => {
   };
 
   const handleSave = async () => {
-    if (!nombres.trim() || !apellidos.trim() || !telefonoTutor.trim() || !elencoId) {
-      Alert.alert('Error', 'Completa todos los campos requeridos');
+    if (!nombres.trim() || !apellidos.trim() || !telefonoTutor.trim() || !elencoId || !fechaNacimiento) {
+      Alert.alert('Error', 'Completa todos los campos requeridos, incluyendo la fecha de nacimiento');
       return;
     }
 
@@ -53,6 +55,7 @@ export const AddStudentScreen = ({ route, navigation }) => {
         telefono_tutor: telefonoTutor.trim(),
         elenco_id: elencoId,
         fecha_inscripcion: fechaInscripcion.toISOString().split('T')[0],
+        fecha_nacimiento: fechaNacimiento.toISOString().split('T')[0],
         monto_mens: monto,
         activo: true,
       });
@@ -101,6 +104,27 @@ export const AddStudentScreen = ({ route, navigation }) => {
             <View style={styles.formGroup}>
               <Text style={styles.label(theme)}>Teléfono del Tutor *</Text>
               <TextInput style={styles.input(theme)} value={telefonoTutor} onChangeText={setTelefonoTutor} placeholder="12345678" placeholderTextColor={theme.colors.textSecondary} keyboardType="phone-pad" />
+            </View>
+            <View style={styles.formGroup}>
+              <Text style={styles.label(theme)}>Fecha de Nacimiento *</Text>
+              <TouchableOpacity style={styles.dateButton(theme)} onPress={() => setShowBirthDatePicker(true)}>
+                <Ionicons name="calendar-outline" size={20} color={theme.colors.primary} />
+                <Text style={styles.dateButtonText(theme)}>
+                  {fechaNacimiento ? fechaNacimiento.toLocaleDateString('es-ES') : 'Seleccionar fecha'}
+                </Text>
+              </TouchableOpacity>
+              {showBirthDatePicker && (
+                <DateTimePicker 
+                  value={fechaNacimiento || new Date()} 
+                  mode="date" 
+                  display="default" 
+                  onChange={(e, date) => { 
+                    setShowBirthDatePicker(false); 
+                    if (date) setFechaNacimiento(date); 
+                  }} 
+                  maximumDate={new Date()}
+                />
+              )}
             </View>
           </Card>
 

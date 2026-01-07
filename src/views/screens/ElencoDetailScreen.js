@@ -179,6 +179,18 @@ export const ElencoDetailScreen = ({ route, navigation }) => {
           <Ionicons name="clipboard" size={28} color={theme.colors.card} />
         </TouchableOpacity>
       )}
+
+      {/* Floating Action Button - Add Student */}
+      <TouchableOpacity
+        style={[
+          styles.fabAdd(theme),
+          students.length > 0 && styles.fabAddOffset // Apply offset if attendance button is present
+        ]}
+        onPress={() => navigation.navigate('AddStudent', { elencoId: elenco.id })}
+        activeOpacity={0.8}
+      >
+        <Ionicons name="add" size={32} color={theme.colors.card} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -348,4 +360,21 @@ const styles = {
     ...theme.shadows.large,
     elevation: 8,
   }),
+  fabAdd: (theme) => ({
+    position: 'absolute',
+    right: 20,
+    bottom: 100, // Default position (same as attendance button if attendance is hidden)
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: theme.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...theme.shadows.large,
+    elevation: 8,
+    zIndex: 2, // Ensure it's above other elements
+  }),
+  fabAddOffset: {
+    bottom: 170, // Position when attendance button is present (100 + 56 + 14)
+  },
 };

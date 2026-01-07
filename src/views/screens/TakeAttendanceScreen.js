@@ -17,6 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { getTheme } from '../../theme';
 import { Card } from '../components/Card';
 import { AsistenciaService } from '../../services/AsistenciaService';
+import { Estudiante } from '../../models/Estudiante';
 
 const STATUS_OPTIONS = [
   { id: 'presente', label: 'Presente', icon: 'checkmark-circle', color: '#4CAF50' },
@@ -26,7 +27,8 @@ const STATUS_OPTIONS = [
 ];
 
 export const TakeAttendanceScreen = ({ route, navigation }) => {
-  const { elenco, students } = route.params;
+  const { elenco } = route.params;
+  const students = route.params.students.map(s => Estudiante.fromJSON(s));
   const colorScheme = useColorScheme();
   const theme = getTheme(colorScheme === 'dark');
   const [date, setDate] = useState(new Date());

@@ -15,10 +15,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { SchedulePicker } from '../components/SchedulePicker';
-import { ElencoService } from '../../services/ElencoService';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { SchedulePicker } from '../../components/SchedulePicker';
+import { ElencoService } from '../../../services/ElencoService';
 
 export const AddElencoScreen = ({ navigation }) => {
   const colorScheme = useColorScheme();

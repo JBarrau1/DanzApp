@@ -14,10 +14,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { AsistenciaService } from '../../services/AsistenciaService';
-import { Estudiante } from '../../models/Estudiante';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { AsistenciaService } from '../../../services/AsistenciaService';
+import { Estudiante } from '../../../models/Estudiante';
 
 const STATUS_OPTIONS = [
   { id: 'presente', label: 'Presente', icon: 'checkmark-circle', color: '#4CAF50' },

@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { PaymentRegistrationModal } from '../components/PaymentRegistrationModal';
-import { CreateMensualidadModal } from '../components/CreateMensualidadModal';
-import { MensualidadService } from '../../services/MensualidadService';
-import { Estudiante } from '../../models/Estudiante';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { PaymentRegistrationModal } from '../../components/PaymentRegistrationModal';
+import { CreateMensualidadModal } from '../../components/CreateMensualidadModal';
+import { MensualidadService } from '../../../services/MensualidadService';
+import { Estudiante } from '../../../models/Estudiante';
 
 export const StudentPaymentScreen = ({ route, navigation }) => {
   const student = Estudiante.fromJSON(route.params.student);

@@ -4,10 +4,10 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, Alert, ActivityInd
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { EstudianteService } from '../../services/EstudianteService';
-import { ElencoService } from '../../services/ElencoService';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { EstudianteService } from '../../../services/EstudianteService';
+import { ElencoService } from '../../../services/ElencoService';
 
 export const AddStudentScreen = ({ route, navigation }) => {
   const colorScheme = useColorScheme();

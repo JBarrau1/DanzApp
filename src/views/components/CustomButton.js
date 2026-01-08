@@ -71,7 +71,7 @@ export const CustomButton = ({
 
 const makeStyles = (theme) => StyleSheet.create({
   button: {
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.xl,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',

@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { StatCard } from '../components/StatCard';
-import { Card } from '../components/Card';
-import { HomeController } from '../../controllers/HomeController';
+import { getTheme } from '../../../theme';
+import { StatCard } from '../../components/StatCard';
+import { Card } from '../../components/Card';
+import { HomeController } from '../../../controllers/HomeController';
 
 export const HomeScreen = () => {
   const colorScheme = useColorScheme();

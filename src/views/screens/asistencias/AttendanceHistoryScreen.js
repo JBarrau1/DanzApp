@@ -15,10 +15,10 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { AsistenciaService } from '../../services/AsistenciaService';
-import { ElencoService } from '../../services/ElencoService';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { AsistenciaService } from '../../../services/AsistenciaService';
+import { ElencoService } from '../../../services/ElencoService';
 
 const STATUS_OPTIONS = [
   { id: 'todos', label: 'Todos', color: '#9E9E9E' },

@@ -7,13 +7,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getTheme } from '../theme';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { ElencoDetailScreen } from '../views/screens/ElencoDetailScreen';
-import { AddElencoScreen } from '../views/screens/AddElencoScreen';
-import { TakeAttendanceScreen } from '../views/screens/TakeAttendanceScreen';
-import { AttendanceHistoryScreen } from '../views/screens/AttendanceHistoryScreen';
-import { StudentPaymentScreen } from '../views/screens/StudentPaymentScreen';
-import { AddStudentScreen } from '../views/screens/AddStudentScreen';
-import { LoginScreen } from '../views/screens/login/LoginScreen';
+import { ElencoDetailScreen } from '../views/screens/elencos/ElencoDetailScreen';
+import { AddElencoScreen } from '../views/screens/elencos/AddElencoScreen';
+import { TakeAttendanceScreen } from '../views/screens/asistencias/TakeAttendanceScreen';
+import { AttendanceHistoryScreen } from '../views/screens/asistencias/AttendanceHistoryScreen';
+import { StudentPaymentScreen } from '../views/screens/pagos/StudentPaymentScreen';
+import { AddStudentScreen } from '../views/screens/estudiantes/AddStudentScreen';
+import { WelcomeScreen } from '../views/screens/autenticacion/WelcomeScreen';
+import { LoginScreen } from '../views/screens/autenticacion/LoginScreen';
+import { RegisterScreen } from '../views/screens/autenticacion/RegisterScreen';
 import { supabase } from '../config/supabase';
 
 const Stack = createStackNavigator();
@@ -57,7 +59,10 @@ export const RootNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        cardStyle: { backgroundColor: theme.colors.background },
+        // Match the Auth background color (#597870) to prevent white flash during auth transitions.
+        // For logged-in screens, the screens themselves define their own background.
+        cardStyle: { backgroundColor: session ? theme.colors.background : '#597870' },
+        animationEnabled: true,
       }}
     >
       {session ? (
@@ -73,7 +78,11 @@ export const RootNavigator = () => {
         </>
       ) : (
         // Auth Stack
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+        </>
       )}
     </Stack.Navigator>
   );

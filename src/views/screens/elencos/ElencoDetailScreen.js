@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { EstudianteService } from '../../services/EstudianteService';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { EstudianteService } from '../../../services/EstudianteService';
 
 export const ElencoDetailScreen = ({ route, navigation }) => {
   const { elenco } = route.params;

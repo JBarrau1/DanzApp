@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { Card } from '../components/Card';
-import { MensualidadService } from '../../services/MensualidadService';
+import { getTheme } from '../../../theme';
+import { Card } from '../../components/Card';
+import { MensualidadService } from '../../../services/MensualidadService';
 
 export const PaymentScreen = ({ navigation }) => {
   const colorScheme = useColorScheme();

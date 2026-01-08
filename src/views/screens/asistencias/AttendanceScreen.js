@@ -13,11 +13,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { getTheme } from '../../theme';
-import { ElencoCard } from '../components/ElencoCard';
-import { ElencoService } from '../../services/ElencoService';
-import { EstudianteService } from '../../services/EstudianteService';
-import { supabase } from '../../config/supabase';
+import { getTheme } from '../../../theme';
+import { ElencoCard } from '../../components/ElencoCard';
+import { ElencoService } from '../../../services/ElencoService';
+import { EstudianteService } from '../../../services/EstudianteService';
+import { supabase } from '../../../config/supabase';
 
 export const AttendanceScreen = ({ navigation }) => {
   const colorScheme = useColorScheme();

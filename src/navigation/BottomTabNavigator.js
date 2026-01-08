@@ -1,13 +1,10 @@
-// Bottom Tab Navigator (Modern Floating Design)
-// Navigation configuration with custom floating tab bar
-
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getTheme } from '../theme';
-import { HomeScreen } from '../views/screens/HomeScreen';
-import { AttendanceScreen } from '../views/screens/AttendanceScreen';
-import { PaymentScreen } from '../views/screens/PaymentScreen';
+import { HomeScreen } from '../views/screens/inicio/HomeScreen';
+import { AttendanceScreen } from '../views/screens/asistencias/AttendanceScreen';
+import { PaymentScreen } from '../views/screens/pagos/PaymentScreen';
 import { CustomTabBar } from './CustomTabBar';
 
 const Tab = createBottomTabNavigator();

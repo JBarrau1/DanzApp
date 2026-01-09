@@ -1,161 +1,115 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, useColorScheme, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AnimatedBackground } from '../../components/AnimatedBackground';
-import { getTheme } from '../../../theme';
 
 const { width } = Dimensions.get('window');
 
 export const WelcomeScreen = ({ navigation }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme === 'dark');
-  const styles = makeStyles(theme);
-
   return (
-    <AnimatedBackground>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.contentContainer}>
-          
-          {/* Top Card Image Area */}
-          <View style={styles.cardContainer}>
-            <Image 
-              source={require('../../../assets/images/IMG_8025.jpg')} 
-              style={{ width: '100%', height: '100%' }}
-              resizeMode="cover"
-            />
-          </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F2F478" />
+      
+      {/* Title Section */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>
+          Bienvenido a:
+        </Text>
+        {/* Logo added as requested */}
+        <Image 
+          source={require('../../../assets/images/Logos_DanzApp_sfn.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
 
-          {/* Text Content */}
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Gestión Pro</Text>
-            <Text style={styles.subheader}>Tu academia, al siguiente nivel</Text>
-            <Text style={styles.description}>
-              Descubre la forma más eficiente de administrar tus clases, estudiantes y pagos en un solo lugar.
-            </Text>
-          </View>
+      {/* Image Section */}
+      <View style={styles.imageContainer}>
+        <Image 
+          source={require('../../../assets/images/modelo_bienv.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </View>
 
-          {/* Bottom Toggle Buttons */}
-          <View style={styles.bottomContainer}>
-            <View style={styles.toggleContainer}>
-              <TouchableOpacity 
-                style={styles.toggleButtonLeft} 
-                onPress={() => navigation.navigate('Register')}
-              >
-                <Text style={styles.toggleText}>Registrarse</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={styles.toggleButtonRight} 
-                onPress={() => navigation.navigate('Login')}
-              >
-                <Text style={styles.toggleTextActive}>Ingresar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-        </View>
-      </SafeAreaView>
-    </AnimatedBackground>
+      {/* Footer / Buttons */}
+      <View style={styles.footerContainer}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => navigation.navigate('Register')}
+        >
+          <Text style={styles.buttonText}>Registrar</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
-const makeStyles = (theme) => StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  contentContainer: {
-    flex: 1,
+    backgroundColor: '#F2F478', // Light yellow/lime background
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
-    paddingBottom: 20,
   },
-  cardContainer: {
-    marginTop: 20,
-    height: '45%',
-    width: '100%',
-    borderRadius: 32,
-    overflow: 'hidden',
-    backgroundColor: theme.colors.surface, // Adaptive surface color
-    borderWidth: 1,
-    borderColor: theme.colors.border, // Adaptive border
-  },
-  imagePlaceholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colors.background,
-  },
-  placeholderText: {
-    color: theme.colors.textSecondary,
-    fontSize: 18,
-    fontStyle: 'italic',
-  },
-  textContainer: {
-    alignItems: 'center',
-    paddingVertical: 20,
+  headerContainer: {
+    flex: 0.55, // Increased from 0.3 to fit large logo + text
+    justifyContent: 'flex-end',
+    paddingBottom: 10,
   },
   title: {
-    fontSize: 36,
-    fontWeight: '800',
-    color: theme.colors.text, // Adaptive text
+    fontSize: 32, // Slightly smaller to ensure fit
+    fontWeight: '900', // Maximum bold
+    color: '#000000',
     textAlign: 'center',
-    marginBottom: 8,
+    lineHeight: 36,
+    letterSpacing: -0.5,
   },
-  subheader: {
-    fontSize: 28,
-    fontWeight: '300',
-    color: theme.colors.text, // Adaptive text
-    textAlign: 'center',
-    marginBottom: 16,
+  logo: {
+    marginTop: -100, // Pull closer to text
+    width: 350,
+    height: 350, // User's requested size
+    alignSelf: 'center',
   },
-  description: {
-    fontSize: 16,
-    color: theme.colors.textSecondary, // Adaptive secondary text
-    textAlign: 'center',
-    lineHeight: 24,
-    maxWidth: '90%',
-  },
-  bottomContainer: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: theme.colors.surface, // Adaptive pill background
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    padding: 6,
-  },
-  toggleButtonLeft: {
-    flex: 1,
-    borderRadius: 30,
+  imageContainer: {
+    flex: 0.45, // Reduced from 0.5
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.primary, // Primary color for active button
+  },
+  image: {
+    marginTop: -120, // Move image up
+    width: '180%',
+    height: '180%',
+  },
+  footerContainer: {
+    flex: 0.2,
+    flexDirection: 'row', // Horizontal layout
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: 40,
+    gap: 15,
+  },
+  button: {
+    flex: 1, // Share space equally
+    height: 56,
+    backgroundColor: '#000000',
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    marginRight: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
   },
-  toggleButtonRight: {
-    flex: 1,
-    borderRadius: 30, // Fully rounded
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 4,
-    // Transparent / Inactive style
-  },
-  toggleText: {
+  buttonText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFFFFF', // White text on Primary button
-  },
-  toggleTextActive: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: theme.colors.text, // Adaptive text on transparent button
+    color: '#F2F478', // Yellow text
   },
 });

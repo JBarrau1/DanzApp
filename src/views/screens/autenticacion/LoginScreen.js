@@ -48,31 +48,35 @@ export const LoginScreen = ({ navigation }) => {
     }
   };
 
+  const backgroundColor = colorScheme === 'dark' ? '#292929' : '#FFFFFF';
+  const textColor = colorScheme === 'dark' ? '#FFFFFF' : '#000000';
+  const subtitleColor = colorScheme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)';
+
   return (
-    <AnimatedBackground>
-      <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={28} color={textColor} />
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView 
+            contentContainerStyle={styles.container}
+            showsVerticalScrollIndicator={false}
         >
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Iniciar Sesión</Text>
-            <View style={{ width: 28 }} /> 
-          </View>
+          <View style={styles.contentWrapper}>
+            <View style={styles.welcomeTextContainer}>
+              <Text style={[styles.welcomeTitle, { color: textColor }]}>¡Hola de nuevo!</Text>
+              <Text style={[styles.welcomeSubtitle, { color: subtitleColor }]}>
+                Ingresa tus credenciales para continuar
+              </Text>
+            </View>
 
-          <ScrollView 
-             contentContainerStyle={styles.container}
-             showsVerticalScrollIndicator={false}
-          >
             <View style={styles.formContainer}>
-              <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeTitle}>¡Hola de nuevo!</Text>
-                <Text style={styles.welcomeSubtitle}>Ingresa tus credenciales para continuar</Text>
-              </View>
-
               <CustomInput
                 label="Correo Electrónico"
                 placeholder="ejemplo@correo.com"
@@ -80,8 +84,7 @@ export const LoginScreen = ({ navigation }) => {
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                variant="glass"
-                labelStyle={{ color: '#FFF' }}
+                variant="default" 
               />
 
               <CustomInput
@@ -90,8 +93,7 @@ export const LoginScreen = ({ navigation }) => {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                variant="glass"
-                labelStyle={{ color: '#FFF' }}
+                variant="default"
               />
 
               <TouchableOpacity 
@@ -102,7 +104,9 @@ export const LoginScreen = ({ navigation }) => {
                   buttons: [{ text: 'Entendido' }]
                 })}
               >
-                <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+                <Text style={[styles.forgotPasswordText, { color: textColor }]}>
+                  ¿Olvidaste tu contraseña?
+                </Text>
               </TouchableOpacity>
 
               <View style={styles.spacing} />
@@ -111,14 +115,14 @@ export const LoginScreen = ({ navigation }) => {
                 title="Ingresar"
                 onPress={handleLogin}
                 loading={loading}
-                style={styles.submitButton}
-                textStyle={styles.submitButtonText}
+                style={[styles.submitButton, { backgroundColor: textColor }]} 
+                textStyle={[styles.submitButtonText, { color: backgroundColor }]}
               />
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </AnimatedBackground>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -127,73 +131,61 @@ const makeStyles = (theme) => StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.md,
+    paddingHorizontal: 24,
+    paddingTop: 10,
   },
   backButton: {
     padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    marginLeft: -8, // Align with padding
   },
   container: {
-    padding: theme.spacing.lg,
-    justifyContent: 'center',
     flexGrow: 1,
+    paddingHorizontal: 24,
+    justifyContent: 'center',
   },
-  formContainer: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 24,
-    padding: theme.spacing.xl,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
   },
   welcomeTextContainer: {
-    marginBottom: theme.spacing.xl,
-    alignItems: 'center',
+    marginBottom: 40,
   },
   welcomeTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '800',
     marginBottom: 8,
   },
   welcomeSubtitle: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
-    textAlign: 'center',
+    lineHeight: 24,
+  },
+  formContainer: {
+    width: '100%',
   },
   forgotPassword: {
     alignSelf: 'flex-end',
     marginTop: 8,
+    marginBottom: 24,
   },
   forgotPasswordText: {
-    color: 'rgba(255,255,255,0.9)',
     fontSize: 14,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   spacing: {
-    height: 32,
+    height: 20,
   },
   submitButton: {
-    backgroundColor: '#FFFFFF',
     height: 56,
     borderRadius: 28,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 2,
   },
   submitButtonText: {
-    color: '#597870',
     fontSize: 18,
     fontWeight: 'bold',
   },

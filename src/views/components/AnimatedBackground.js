@@ -1,119 +1,109 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Animated, Dimensions, useColorScheme, Easing } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Dimensions, useColorScheme } from 'react-native';
+import { 
+  Canvas, 
+  Circle, 
+  LinearGradient, 
+  vec, 
+  // useComputedValue, <--- ELIMINADO
+  BlurMask,
+} from '@shopify/react-native-skia';
+// Agregamos useDerivedValue aquí
+import { useSharedValue, withRepeat, withTiming, Easing, useDerivedValue } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
+
+// Helper for interpolation
+// IMPORTANTE: Agregamos 'worklet' para que funcione en el hilo de UI de Reanimated
+const mix = (value, x, y) => {
+  "worklet";
+  return x + (y - x) * value;
+}; 
 
 export const AnimatedBackground = ({ children }) => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
-  // Animation values
-  const moveAnim1 = useRef(new Animated.Value(0)).current;
-  const moveAnim2 = useRef(new Animated.Value(0)).current;
-
+  // Animation values using Reanimated (0 to 1)
+  const progress = useSharedValue(0);
+  const breathing = useSharedValue(0);
 
   useEffect(() => {
-    // Movement Animation 1 (Circle 1)
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(moveAnim1, {
-          toValue: 1,
-          duration: 8000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(moveAnim1, {
-          toValue: 0,
-          duration: 8000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+    // Loop animation for circular movement (0 to 1, repeating)
+    progress.value = withRepeat(
+      withTiming(1, { duration: 10000, easing: Easing.linear }),
+      -1, // infinite
+      false // don't reverse
+    );
 
-    // Movement Animation 2 (Circle 2)
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(moveAnim2, {
-          toValue: 1,
-          duration: 12000,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(moveAnim2, {
-          toValue: 0,
-          duration: 12000,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+    // Breathing animation (0 to 1, back and forth)
+    breathing.value = withRepeat(
+      withTiming(1, { duration: 5000, easing: Easing.inOut(Easing.ease) }),
+      -1, // infinite
+      true // reverse (mirroring)
+    );
   }, []);
 
-  // Theme-based static background
-  const backgroundColor = isDark ? '#121212' : '#FFFFFF';
-
-  // Gradient colors for blobs (Green/Teal variations)
-  // Light Mode: Subtle pastel greens
-  // Dark Mode: Deep forest greens with low opacity
-  const blobGradient1 = isDark 
-    ? ['rgba(89, 120, 112, 0.4)', 'rgba(74, 102, 95, 0.1)'] 
-    : ['rgba(89, 120, 112, 0.2)', 'rgba(164, 235, 214, 0.05)'];
-
-  const blobGradient2 = isDark 
-    ? ['rgba(44, 62, 58, 0.4)', 'rgba(89, 120, 112, 0.1)'] 
-    : ['rgba(52, 235, 189, 0.15)', 'rgba(89, 120, 112, 0.05)'];
-
-  const translate1 = moveAnim1.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 50],
+  // --- CAMBIOS AQUÍ ---
+  // Usamos useDerivedValue en lugar de useComputedValue
+  
+  const r1 = useDerivedValue(() => {
+    return mix(breathing.value, width * 0.8, width * 0.9);
   });
 
-  const translate2 = moveAnim2.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -60],
+  const r2 = useDerivedValue(() => {
+    return mix(breathing.value, width * 0.7, width * 0.85);
   });
+  
+  const c1 = useDerivedValue(() => {
+    // Moves in a slight ellipse/figure-8
+    const theta = progress.value * 2 * Math.PI;
+    const x = width * 0.2 + Math.cos(theta) * 50;
+    const y = height * 0.2 + Math.sin(theta) * 80;
+    return vec(x, y);
+  });
+
+  const c2 = useDerivedValue(() => {
+    // Moves in counter-direction
+    const theta = progress.value * 2 * Math.PI;
+    const x = width * 0.8 - Math.cos(theta) * 60;
+    const y = height * 0.6 - Math.sin(theta) * 50;
+    return vec(x, y);
+  });
+
+  // Colors
+  const colors1 = ["#FFEAB8", "#FFCE5C"]; // Cyan to Magenta
+  const colors2 = ["#EBA300", "#FFF7E6"]; // Magenta to Purple
+
+  // Background color based on theme
+  const backgroundColor = isDark ? '#000000' : '#FFFFFF';
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       
-      {/* Decorative Moving Blobs with Gradients */}
-      <Animated.View 
-        style={[
-          styles.blob, 
-          styles.blob1, 
-          { 
-            transform: [{ translateY: translate1 }, { translateX: translate1 }] 
-          }
-        ]} 
-      >
-        <LinearGradient
-          colors={blobGradient1}
-          style={styles.gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        />
-      </Animated.View>
-      
-      <Animated.View 
-        style={[
-          styles.blob, 
-          styles.blob2, 
-          { 
-            transform: [{ translateY: translate2 }, { scale: 1.2 }] 
-          }
-        ]} 
-      >
-        <LinearGradient
-          colors={blobGradient2}
-          style={styles.gradient}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 0, y: 1 }}
-        />
-      </Animated.View>
+      <Canvas style={StyleSheet.absoluteFill}>
+        {/* Circle 1 */}
+        <Circle c={c1} r={r1}>
+          <LinearGradient
+            start={vec(0, 0)}
+            end={vec(width, height)}
+            colors={colors1}
+          />
+          <BlurMask blur={50} style="normal" />
+        </Circle>
+
+        {/* Circle 2 */}
+        <Circle c={c2} r={r2}>
+          <LinearGradient
+            start={vec(width, 0)}
+            end={vec(0, height)}
+            colors={colors2}
+          />
+          <BlurMask blur={50} style="normal" />
+        </Circle>
+      </Canvas>
 
       <View style={styles.content}>
         {children}
@@ -125,33 +115,9 @@ export const AnimatedBackground = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow: 'hidden',
   },
   content: {
     flex: 1,
     zIndex: 1,
-  },
-  blob: {
-    position: 'absolute',
-    borderRadius: 999,
-  },
-  blob1: {
-    width: width * 1.5,
-    height: width * 1.5,
-    top: -width * 0.5,
-    left: -width * 0.2,
-    overflow: 'hidden',
-  },
-  blob2: {
-    width: width * 1.2,
-    height: width * 1.2,
-    bottom: -width * 0.4,
-    right: -width * 0.4,
-    overflow: 'hidden', // Ensure gradient is clipped to blob shape
-  },
-  gradient: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
   },
 });
